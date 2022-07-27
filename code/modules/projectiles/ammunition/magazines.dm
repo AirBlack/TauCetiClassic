@@ -1,3 +1,30 @@
+////////////////UPDATED ICONS//////////////////////
+/obj/item/ammo_box/magazine
+	var/icon/ammo_overlay_icon = null // TODO: Turn overlay data into datum maybe
+	var/ammo_overlay_state = null
+	var/ammo_frames = 1
+	var/ammo_curent_overlay = null // To handle ammo overlay removal
+
+
+/obj/item/ammo_box/magazine/update_icon()
+	..()
+	if(ammo_curent_overlay)
+		cut_overlay(ammo_curent_overlay)
+		ammo_curent_overlay = null // Maybe do cut_overlays() instead
+	if(ammo_overlay_icon) // No need for spirte_count cos if this variable is not nil then we should render it accordingly
+		icon_state = initial(icon_state)
+		var/overlay_to_add = null
+		var/current_ammo_count = round(ammo_count(), 1)
+		if(current_ammo_count > 0)
+			if(((ammo_frames) < max_ammo) && ((ammo_frames) > 0))
+				var/ammo_frame = round((ammo_frames * current_ammo_count) / max_ammo , 1)
+				overlay_to_add = icon(ammo_overlay_icon, icon_state = ammo_overlay_state, frame = max(1, ammo_frame))
+			else if (ammo_frames == max_ammo)
+				overlay_to_add = icon(ammo_overlay_icon, icon_state = ammo_overlay_state, frame = current_ammo_count)
+		if(overlay_to_add)
+			ammo_curent_overlay = overlay_to_add
+			add_overlay(ammo_curent_overlay)
+
 ////////////////INTERNAL MAGAZINES//////////////////////
 /obj/item/ammo_box/magazine/internal/cylinder
 	name = "revolver cylinder"
@@ -149,22 +176,23 @@
 ///////////EXTERNAL MAGAZINES////////////////
 /obj/item/ammo_box/magazine/m9mm
 	name = "magazine (9mm)"
-	icon_state = "9x19stech"
+	icon_state = "57_mag"
 	origin_tech = "combat=2"
 	ammo_type = /obj/item/ammo_casing/c9mm
 	caliber = "9mm"
 	max_ammo = 7
 	multiple_sprites = 2
-
-/obj/item/ammo_box/magazine/m9mm/update_icon()
-	..()
-	icon_state = "[initial(icon_state)]-[round(ammo_count(),1)]"
-
+	ammo_overlay_icon = 'icons/obj/ammo.dmi'
+	ammo_overlay_state = "57_ammo"
+	ammo_frames = 5
 
 /obj/item/ammo_box/magazine/m9mm/ex
 	name = "extended capacity magazine (9mm)"
-	icon_state = "9x19exstech"
+	icon_state = "57_mag_extended"
 	max_ammo = 16
+	ammo_overlay_icon = 'icons/obj/ammo.dmi'
+	ammo_overlay_state = "57_extended_ammo"
+	ammo_frames = 6
 
 /obj/item/ammo_box/magazine/m9mm_2
 	name = "magazine (9mm)"

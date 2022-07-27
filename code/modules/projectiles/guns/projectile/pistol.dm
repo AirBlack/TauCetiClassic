@@ -113,15 +113,36 @@
 	return
 
 /obj/item/weapon/gun/projectile/automatic/pistol
-	name = "Stechkin pistol"
+	name = "FSN"
 	desc = "A small, easily concealable gun. Uses 9mm rounds."
-	icon_state = "stechkin"
-	item_state = "9mm_glock"
+	icon_state = "57"
+	item_state = "57"
 	w_class = SIZE_TINY
 	silenced = 0
 	origin_tech = "combat=2;materials=2;syndicate=2"
 	can_be_holstered = TRUE
 	mag_type = /obj/item/ammo_box/magazine/m9mm
+	var/mag_icon = null
+
+/obj/item/weapon/gun/projectile/automatic/pistol/atom_init()
+	. = ..()
+	update_mag_overlay(magazine)
+
+/obj/item/weapon/gun/projectile/automatic/pistol/proc/decide_mag(obj/item/ammo_box/magazine/AM)
+	if(AM && (istype(AM, mag_type) || istype(AM, mag_type2)))
+		if(istype(AM, /obj/item/ammo_box/magazine/m9mm/ex))
+			return image('icons/obj/gun.dmi', "57_mag_extended")
+		return image('icons/obj/gun.dmi', "57_mag")
+	return null
+
+/obj/item/weapon/gun/projectile/automatic/pistol/proc/update_mag_overlay(obj/item/ammo_box/magazine/AM)
+	var/MI = decide_mag(AM)
+	if(mag_icon)
+		cut_overlay(mag_icon)
+		mag_icon = null
+	if(MI)
+		mag_icon = MI
+		add_overlay(MI)
 
 /obj/item/weapon/gun/projectile/automatic/pistol/attack_hand(mob/user)
 	if(loc == user)
@@ -130,15 +151,23 @@
 				return
 	..()
 
+/obj/item/weapon/gun/projectile/automatic/pistol/attack_self(mob/user)
+	update_mag_overlay(null)
+	..()
+
 /obj/item/weapon/gun/projectile/automatic/pistol/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/weapon/silencer))
 		silencer_attackby(I, user)
 		return
+	if(istype(I, /obj/item/ammo_box/magazine)) // TODO: Refactor mag code and extract it to somewhere common like /gun/projectile/weapon/mag_fed or something like that
+		var/obj/item/ammo_box/magazine/AM = I
+		if((!magazine && (istype(AM, mag_type) || istype(AM, mag_type2))))
+			update_mag_overlay(AM)
 	return ..()
 
 /obj/item/weapon/gun/projectile/automatic/pistol/update_icon()
 	..()
-	icon_state = "[initial(icon_state)][magazine ? "-[magazine.max_ammo]" : ""][silenced ? "-silencer" : ""][chambered ? "" : "-e"]"
+	icon_state = "[initial(icon_state)][(chambered && get_ammo()) ? "" : "_e"]"
 	return
 
 /obj/item/weapon/gun/projectile/automatic/colt1911
