@@ -258,7 +258,10 @@
 	short = 1
 
 /obj/item/weapon/gun/projectile/revolver/syndie
-	name = "revolver"
+	name = "TR-9 revolver"
 	desc = "A powerful revolver, very popular among mercenaries and pirates. Uses .357 ammo."
-	icon_state = "synd_revolver"
+	icon = 'icons/obj/long_gun.dmi'
+	icon_state = "Revolver"
+	item_state = "bigpistol"
+	pixel_x = -4
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder
