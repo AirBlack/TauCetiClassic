@@ -116,7 +116,7 @@
 	name = "FSN"
 	desc = "A small, easily concealable gun. Uses 9mm rounds."
 	icon_state = "57"
-	item_state = "57"
+	item_state = "pistol"
 	w_class = SIZE_TINY
 	silenced = 0
 	origin_tech = "combat=2;materials=2;syndicate=2"

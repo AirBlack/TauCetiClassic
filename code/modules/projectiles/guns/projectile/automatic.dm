@@ -82,67 +82,56 @@
 /obj/item/weapon/gun/projectile/automatic/l6_saw
 	name = "L6 SAW"
 	desc = "A heavily modified light machine gun with a tactical plasteel frame resting on a rather traditionally-made ballistic weapon. Has 'Aussec Armoury - 2531' engraved on the reciever, as well as '7.62x51mm'."
-	icon_state = "l6closed100"
-	item_state = "l6closedmag"
+	icon = 'icons/obj/long_gun.dmi'
+	icon_state = "SAW"
+	item_state = "saw"
 	w_class = SIZE_BIG
 	slot_flags = 0
+	pixel_x = -4 
 	origin_tech = "combat=5;materials=1;syndicate=2"
 	mag_type = /obj/item/ammo_box/magazine/m762
 	fire_sound = 'sound/weapons/guns/Gunshot2.ogg'
-	has_cover = TRUE
-	istwohanded = TRUE
-
-/obj/item/weapon/gun/projectile/automatic/l6_saw/atom_init()
-	. = ..()
-	AddComponent(/datum/component/twohanded)
+	required_skills = list(/datum/skill/firearms = SKILL_LEVEL_PRO)
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/update_icon()
-	icon_state = "l6[cover_open ? "open" : "closed"][magazine ? CEIL(get_ammo(0) / 12.5) * 25 : "-empty"]"
+	..()
+	cut_overlays()
+	icon_state = "SAW"
+	item_state = "saw_empty"
+	if(magazine)
+		item_state = "saw"
+		var/image/image = image('icons/obj/long_gun.dmi', icon_state = "SAW_mag")
+		add_overlay(image)
 
-/obj/item/weapon/gun/projectile/automatic/l6_saw/afterattack(atom/target, mob/user, proximity, params) //what I tried to do here is just add a check to see if the cover is open or not and add an icon_state change because I can't figure out how c-20rs do it with overlays
-	if(!HAS_TRAIT(src, TRAIT_DOUBLE_WIELDED))
-		to_chat(user, "<span class='notice'>You need wield [src] in both hands before firing!</span>")
-		return
-	if(cover_open)
-		to_chat(user, "<span class='notice'>[src]'s cover is open! Close it before firing!</span>")
-	else
-		..()
-		update_icon()
-
-/obj/item/weapon/gun/projectile/automatic/l6_saw/attack_hand(mob/user)
-	if(loc != user)
-		return ..()//let them pick it up
-	if(user.get_inactive_hand() != src)
-		return ..()//let them take it from inventory
-	if(!cover_open)
-		if(ishuman(user))
-			var/mob/living/carbon/human/H = user
-			if(!H.can_use_two_hands())
-				to_chat(user, "<span class='warning'>You need both of your hands to be intact.</span>")
-				return
-		cover_open = !cover_open
-		to_chat(user, "<span class='notice'>You open [src]'s cover.</span>")
-		update_icon()
-	else if(cover_open && magazine)
-		//drop the mag
-		magazine.update_icon()
-		magazine.loc = get_turf(src.loc)
-		user.put_in_hands(magazine)
-		magazine = null
-		update_icon()
-		playsound(src, 'sound/weapons/guns/reload_mag_out.ogg', VOL_EFFECTS_MASTER)
-		to_chat(user, "<span class='notice'>You remove the magazine from [src].</span>")
-	else
-		if(chambered)
-			playsound(src, bolt_slide_sound, VOL_EFFECTS_MASTER)
-			process_chamber()
-
+/obj/item/weapon/gun/projectile/automatic/l6_saw/special_check(mob/user, atom/target)
+	. = ..()
+	if(.)
+		// Two-handed wielding prototype for trying.
+		// Has modern codebases idea where you simply need an empty hand to shoot, while keeping old idea where it blocks shooting at all.
+		if(user.get_inactive_hand())
+			to_chat(user, "<span class='notice'>Your other hand must be free before firing! This weapon requires both hands to use.</span>")
+			return FALSE
+		if(user.is_busy())
+			return FALSE
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/attackby(obj/item/I, mob/user, params)
-	if(!cover_open)
-		to_chat(user, "<span class='notice'>[src]'s cover is closed! You can't insert a new mag!</span>")
+	if(!istype(I, mag_type))
+		return ..()
+	if(magazine)
+		to_chat(user, "<span class='notice'>Manual reload only.</span>")
+		return
+	if(user.is_busy() || !do_skilled(user, src, SKILL_TASK_EASY, required_skills, -0.3))
+		// TODO: Add sound
+		to_chat(user, "<span class='notice'>You need to stand still to load [src].</span>")
 		return
 	return ..()
+
+/obj/item/weapon/gun/projectile/automatic/l6_saw/attack_self(mob/living/user)
+	if(magazine && (user.is_busy() || !do_skilled(user, src, SKILL_TASK_EASY, required_skills, -0.3)))
+		// TODO: Add sound
+		to_chat(user, "<span class='notice'>You need to stand still to eject the magazine from [src].</span>")
+		return
+	. = ..()
 
 /obj/item/weapon/gun/projectile/automatic/tommygun
 	name = "thompson SMG"
