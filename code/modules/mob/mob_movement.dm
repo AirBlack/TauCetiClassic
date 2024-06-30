@@ -225,6 +225,10 @@
 		return FALSE
 	return Move(n, direct)
 
+#define CAMERA_MOVE_AXIS_DIFF_MUL 2
+#define CAMERA_MOVE_NOT_VISIBLE_DISTANCE_MUL 5.0
+#define CAMERA_MOVE_NOT_IN_SCREN_DISTANCE_MUL 3.0
+
 /mob/proc/camera_move(Dir = 0)
 	if(stat || restrained())
 		return FALSE
@@ -252,24 +256,32 @@
 		var/is_in_bounds = FALSE
 		switch(Dir)
 			if(NORTH)
-				is_in_bounds = dy >= abs(dx)
+				is_in_bounds = dy >= abs(dx) * CAMERA_MOVE_AXIS_DIFF_MUL
 			if(SOUTH)
-				is_in_bounds = dy <= -abs(dx)
+				is_in_bounds = dy <= -abs(dx) * CAMERA_MOVE_AXIS_DIFF_MUL
 			if(EAST)
-				is_in_bounds = dx >= abs(dy)
+				is_in_bounds = dx >= abs(dy) * CAMERA_MOVE_AXIS_DIFF_MUL
 			if(WEST)
-				is_in_bounds = dx <= -abs(dy)
+				is_in_bounds = dx <= -abs(dy) * CAMERA_MOVE_AXIS_DIFF_MUL
 		if(is_in_bounds)
 			cameras += C
 	var/minDist = INFINITY
 	var/minCam = console.active_camera
 	for(var/obj/machinery/camera/C as anything in cameras)
 		var/dist = get_dist(T, C)
+		if(dist >= world.view)
+			dist *= CAMERA_MOVE_NOT_IN_SCREN_DISTANCE_MUL
+		else if(!airborne_can_reach(get_turf(T), get_turf(C)))
+			dist *= CAMERA_MOVE_NOT_VISIBLE_DISTANCE_MUL // To make passing trough walls less likely
 		if(dist < minDist)
 			minCam = C
 			minDist = dist
 	console.jump_on_click(src, minCam)
 	return TRUE
+
+#undef CAMERA_MOVE_AXIS_DIFF_MUL
+#undef CAMERA_MOVE_NOT_VISIBLE_DISTANCE_MUL
+#undef CAMERA_MOVE_NOT_IN_SCREN_DISTANCE_MUL
 
 ///Process_Incorpmove
 ///Called by client/Move()
