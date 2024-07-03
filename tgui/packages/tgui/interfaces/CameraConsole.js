@@ -5,6 +5,7 @@ import { createSearch } from 'common/string';
 import { useBackend, useLocalState } from '../backend';
 import { Button, ByondUi, Flex, Input, Section } from '../components';
 import { Window } from '../layouts';
+import { NanoMap } from '../components/NanoMap';
 
 /**
  * Returns previous and next camera names relative to the currently
@@ -81,12 +82,7 @@ export const CameraConsole = (props, context) => {
               name: nextCameraName,
             })} />
         </div>
-        <ByondUi
-          className="CameraConsole__map"
-          params={{
-            id: mapRef,
-            type: 'map',
-          }} />
+        <NanoMap />
       </div>
     </Window>
   );

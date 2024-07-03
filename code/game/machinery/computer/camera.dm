@@ -226,6 +226,7 @@
 	data["mapRef"] = map_name
 	var/list/cameras = get_cached_cameras()
 	data["cameras"] = list()
+	data["mapName"] = SSmapping.station_image
 	for(var/i in cameras)
 		var/obj/machinery/camera/C = cameras[i]
 		if(!QDELETED(C))
