@@ -12,6 +12,9 @@
 	w_class = SIZE_TINY
 	slot_flags = SLOT_FLAGS_ID | SLOT_FLAGS_BELT
 
+	var/datum/pda_program/analyzer/current_analyzer_program = null
+	var/datum/pda_program/ui/current_ui_program = null
+
 	//Main variables
 	var/owner = null
 	var/default_cartridge = 0 // Access level defined by cartridge
