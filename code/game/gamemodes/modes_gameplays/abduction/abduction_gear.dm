@@ -483,9 +483,10 @@
 	name = "alien optable"
 	desc = "Used for experiments on creatures."
 	icon = 'icons/obj/abductor.dmi'
+	can_buckle = TRUE
+	buckle_lying = TRUE
 	var/holding = FALSE
-	var/belt = null
-	var/mob/living/carbon/fastened = null
+	var/image/belt = null
 
 /obj/machinery/optable/abductor/atom_init()
 	belt = image("icons/obj/abductor.dmi", "belt", layer = FLY_LAYER)
@@ -497,61 +498,55 @@
 	component_parts += new /obj/item/weapon/stock_parts/capacitor/adv/super/quadratic(null)
 	component_parts += new /obj/item/stack/cable_coil/red(null, 2)
 	RefreshParts()
-/obj/machinery/optable/abductor/attack_hand(mob/living/carbon/C)
-	if(!victim && !fastened)
-		return
 
-	//exclusion any bugs with grab
-	if(!istype(C))
-		return
-	C.SetNextMove(CLICK_CD_MELEE)
-	victim.StopGrabs()
-
-	holding = !holding
-
+/obj/machinery/optable/abductor/post_buckle_mob(mob/living/M)
 	var/atom/movable/overlay/animation = new /atom/movable/overlay(src.loc)
 	animation.icon_state = "blank"
 	animation.icon = 'icons/obj/abductor.dmi'
 	animation.layer = FLY_LAYER
-
-	if(holding)
-		fastened = victim
-		//correction position of victim
-		switch(fastened.lying_current)
-			if(90)
-				if(fastened.pixel_x != 2)
-					fastened.pixel_x = 2
-				animation.set_dir(2)
-				set_dir(2)
-			else
-				if(fastened.pixel_x != -2)
-					fastened.pixel_x = -2
-				animation.set_dir(1)
-				set_dir(1)
-		if(fastened.pixel_y != -4)
-			fastened.pixel_y = -4
-		if(fastened.dir & (EAST|WEST|NORTH))
-			fastened.set_dir(SOUTH)
-
-		flick("belt_anim_on",animation)
-		sleep(7)
+	var/lying_offset = 0
+	switch(M.lying_current)
+		if(90)
+			lying_offset = 2
+			animation.set_dir(2)
+			set_dir(2)
+		else
+			lying_offset = -2
+			animation.set_dir(1)
+			set_dir(1)
+	if(buckled_mob == M)
+		if(M.pixel_x != lying_offset)
+			M.pixel_x = lying_offset
+		if(M.pixel_y != -4)
+			M.pixel_y = -4
+		if(M.dir & (EAST|WEST|NORTH))
+			M.set_dir(SOUTH)
+		flick("belt_anim_on", animation)
 		add_overlay(belt)
-		fastened.anchored = TRUE
-		fastened.SetStunned(INFINITY)
-		fastened.can_be_pulled = FALSE
-		qdel(animation)
+		M.SetStunned(INFINITY)
 	else
-		cut_overlay(belt)
-		switch(fastened.lying_current)
-			if(90)	animation.set_dir(2)
-			else	animation.set_dir(1)
-		flick("belt_anim_off",animation)
-		sleep(9)
-		fastened.SetStunned(0)
-		fastened.anchored = FALSE
-		fastened.can_be_pulled = TRUE
-		fastened = null
-		qdel(animation)
+		cur_overlays()
+		M.pixel_x = M.default_pixel_x
+		M.pixel_y = M.default_pixel_y
+		flick("belt_anim_off", animation)
+		M.SetStunned(0)
+	qdel(animation)
+
+/obj/machinery/optable/abductor/attack_hand(mob/living/carbon/C)
+	if(!istype(C))
+		return
+
+	if(C != buckled_mob && can_buckle && buckled_mob)
+		user_unbuckle_mob(C)
+
+/obj/machinery/optable/abductor/MouseDrop_T(atom/A, mob/user)
+	if(user.incapacitated() || !isliving(A))
+		return
+	if(A.loc == loc)
+		if(can_buckle && !buckled_mob)
+			user_buckle_mob(A, user)
+	else
+		return ..()
 
 /obj/structure/stool/bed/abductor
 	name = "resting contraption"
