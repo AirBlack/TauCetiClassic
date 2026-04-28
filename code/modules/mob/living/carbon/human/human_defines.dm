@@ -132,3 +132,4 @@
 	var/next_allergy_message = 0
 
 	var/wing_accessory_name = "none"
+	var/atom/movable/screen/hud_health_status = null

@@ -855,6 +855,7 @@ var/global/list/tourette_bad_words= list(
 /mob/living/carbon/human/update_health_hud()
 	if(stat == DEAD)
 		healths?.icon_state = "health7"	//DEAD healthmeter
+		hud_health_status?.icon_state = "status5"
 		if(healthdoll)
 			healthdoll.icon_state = "healthdoll_DEAD"
 			healthdoll.cut_overlays()
@@ -891,7 +892,7 @@ var/global/list/tourette_bad_words= list(
 				healthdoll.icon_state = "health_numb"
 				healthdoll.cut_overlays()
 			else
-				healthdoll.add_overlay(image('icons/hud/screen_gen.dmi',"[BP.body_zone][icon_num]"))
+				healthdoll.add_overlay(image(healthdoll.icon,"[BP.body_zone][icon_num]"))
 
 	if(!healths)
 		return
@@ -899,26 +900,35 @@ var/global/list/tourette_bad_words= list(
 	switch(hal_screwyhud)
 		if(1)
 			healths.icon_state = "health6"
+			hud_health_status?.icon_state = "status4"
 			return
 		if(2)
 			healths.icon_state = "health7"
+			hud_health_status?.icon_state = "status5"
 			return
 
 	switch(100 - ((HAS_TRAIT(src, TRAIT_NO_PAIN) && !species.flags[IS_SYNTHETIC]) ? 0 : traumatic_shock))
 		if(100 to INFINITY)
 			healths.icon_state = "health0"
+			hud_health_status?.icon_state = "status0"
 		if(80 to 100)
 			healths.icon_state = "health1"
+			hud_health_status?.icon_state = "status1"
 		if(60 to 80)
 			healths.icon_state = "health2"
+			hud_health_status?.icon_state = "status2"
 		if(40 to 60)
 			healths.icon_state = "health3"
+			hud_health_status?.icon_state = "status2"
 		if(20 to 40)
 			healths.icon_state = "health4"
+			hud_health_status?.icon_state = "status3"
 		if(0 to 20)
 			healths.icon_state = "health5"
+			hud_health_status?.icon_state = "status3"
 		else
 			healths.icon_state = "health6"
+			hud_health_status?.icon_state = "status4"
 
 /mob/living/carbon/human/handle_regular_hud_updates()
 	if(!client)

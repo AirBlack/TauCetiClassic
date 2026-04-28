@@ -481,7 +481,7 @@
 /datum/hallucination/fake_health_doll/proc/on_bodypart_hud_update(obj/item/organ/external/source, mob/living/carbon/human/owner)
 	SIGNAL_HANDLER
 
-	var/mutable_appearance/fake_overlay = mutable_appearance('icons/hud/screen_gen.dmi', "[source.body_zone][5]") //bodyparts[source]
+	var/mutable_appearance/fake_overlay = mutable_appearance(owner.healthdoll.icon, "[source.body_zone][5]") //bodyparts[source]
 	owner.healthdoll.add_overlay(fake_overlay)
 	return COMPONENT_OVERRIDE_BODYPART_HEALTH_HUD
 

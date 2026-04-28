@@ -219,6 +219,7 @@
 #include "code\_onclick\hud\rendering\planes\UI.dm"
 #include "code\_onclick\hud\ui_screens\alien.dm"
 #include "code\_onclick\hud\ui_screens\basic.dm"
+#include "code\_onclick\hud\ui_screens\bighud.dm"
 #include "code\_onclick\hud\ui_screens\complex.dm"
 #include "code\_onclick\hud\ui_screens\ghost.dm"
 #include "code\_onclick\hud\ui_screens\ian.dm"

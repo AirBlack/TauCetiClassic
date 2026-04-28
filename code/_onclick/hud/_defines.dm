@@ -111,6 +111,27 @@
 #define ui_ghost_mafia           "SOUTH:6,CENTER+2:16"
 #define ui_ghost_spawners_menu   "SOUTH:6,CENTER-4:16"
 
+// Big HUD by Walter
+#define bigui_backhud "WEST-3:-6,SOUTH:0"
+
+// Status
+#define bigui_healthstatus "WEST-3:-6,NORTH-4:23"
+#define bigui_heartbeat "WEST-3:-3,NORTH-1:18"
+#define bigui_healthdoll "WEST-2:-7,NORTH-2:16"
+#define bigui_temperature "WEST-3:-5,NORTH-3:16"
+#define bigui_nutrition "WEST-3:-2,NORTH-4:25"
+#define bigui_internals "WEST-1:-13,NORTH-4:-4"
+
+// Zoom
+#define bigui_zoom "WEST-3:-6,SOUTH-4:9"
+
+// Hands
+#define bigui_lefthand_back "WEST-3:-2,CENTER+1:1"
+#define bigui_lefthand_button "WEST-1:-14,CENTER+1:2"
+#define bigui_righthand_back "WEST-3:-2,CENTER+1:-5"
+#define bigui_righthand_button "WEST-1:-14,CENTER+1:-11"
+
+
 // AI
 #define ui_ai_core "SOUTH:6,WEST"
 #define ui_ai_camera_list "SOUTH:6,WEST+1"
