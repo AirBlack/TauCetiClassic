@@ -293,9 +293,7 @@ Hit Procs
 		to_chat(src, "<span class='warning'>Your other hand is too busy holding [item_in_hand].</span>")
 		return
 	src.hand = !( src.hand )
-	if(hud_used && l_hand_hud_object && r_hand_hud_object)
-		l_hand_hud_object.update_icon(src)
-		r_hand_hud_object.update_icon(src)
+	update_hud_hands()
 
 /mob/living/carbon/xenomorph/get_pixel_y_offset(lying = 0)
 	return initial(pixel_y)

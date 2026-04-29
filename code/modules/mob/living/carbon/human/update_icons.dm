@@ -792,7 +792,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	remove_standing_overlay(R_HAND_LAYER)
 
 	if(r_hand)
-		r_hand.screen_loc = ui_rhand
+		r_hand.screen_loc = bigui_righthand_item_pos
 		if(client && hud_used)
 			client.screen += r_hand
 
@@ -811,7 +811,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	remove_standing_overlay(L_HAND_LAYER)
 
 	if(l_hand)
-		l_hand.screen_loc = ui_lhand
+		l_hand.screen_loc = bigui_lefthand_item_pos
 		if(client && hud_used)
 			client.screen += l_hand
 

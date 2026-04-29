@@ -525,15 +525,18 @@
 	item_in_hand = get_active_hand()
 	if(item_in_hand)
 		SEND_SIGNAL(item_in_hand, COMSIG_ITEM_BECOME_ACTIVE, src)
-	if(hud_used && l_hand_hud_object && r_hand_hud_object)
-		l_hand_hud_object.update_icon(src)
-		r_hand_hud_object.update_icon(src)
+	update_hud_hands()
 
 	/*if (!( src.hand ))
 		src.hands.dir = NORTH
 	else
 		src.hands.dir = SOUTH*/
 	return
+
+/mob/living/carbon/proc/update_hud_hands()
+	if(hud_used && l_hand_hud_object && r_hand_hud_object)
+		l_hand_hud_object.update_icon(src)
+		r_hand_hud_object.update_icon(src)
 
 /mob/living/carbon/proc/activate_hand(selhand) //0 or "r" or "right" for right hand; 1 or "l" or "left" for left hand.
 

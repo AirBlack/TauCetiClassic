@@ -11,6 +11,13 @@
 		say_verb(message)
 	set_typing_indicator(FALSE)
 
+/mob/proc/whisper_wrapper()
+	set_typing_indicator(TRUE)
+	var/message = input("","whisper (text)") as text|null
+	if(message)
+		whisper(message)
+	set_typing_indicator(FALSE)
+
 /mob/proc/me_wrapper()
 	set_typing_indicator(TRUE)
 	var/message = input("","me (text)") as text|null

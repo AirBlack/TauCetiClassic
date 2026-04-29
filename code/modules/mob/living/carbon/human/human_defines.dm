@@ -133,3 +133,6 @@
 
 	var/wing_accessory_name = "none"
 	var/atom/movable/screen/hud_health_status = null
+	var/atom/movable/screen/l_hand_hud_button = null
+	var/atom/movable/screen/r_hand_hud_button = null
+	var/atom/movable/screen/hud_crawl_object = null

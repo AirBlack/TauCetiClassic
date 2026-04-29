@@ -2373,3 +2373,13 @@
 	forceMove(P)
 
 	return P
+
+/mob/living/carbon/human/update_hud_hands()
+	. = ..()
+	if(hud_used && l_hand_hud_button && r_hand_hud_button)
+		l_hand_hud_button.update_icon(src)
+		r_hand_hud_button.update_icon(src)
+
+/mob/living/carbon/human/SetCrawling(value)
+	. = ..()
+	hud_crawl_object.update_icon(src)

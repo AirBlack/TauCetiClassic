@@ -4,7 +4,7 @@
 /mob/living/add_to_hud(datum/hud/hud, add_health=TRUE)
 	hud.init_screens(list(
 		/atom/movable/screen/complex/act_intent,
-		/atom/movable/screen/move_intent,
+		/atom/movable/screen/move_intent/big,
 		/atom/movable/screen/zone_sel,
 		/atom/movable/screen/pull,
 	))

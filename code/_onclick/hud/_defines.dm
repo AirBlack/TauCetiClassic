@@ -123,14 +123,25 @@
 #define bigui_internals "WEST-1:-13,NORTH-4:-4"
 
 // Zoom
-#define bigui_zoom "WEST-3:-6,SOUTH-4:9"
+#define bigui_zoom "WEST-3:-6,NORTH-4:9"
 
 // Hands
-#define bigui_lefthand_back "WEST-3:-2,CENTER+1:1"
-#define bigui_lefthand_button "WEST-1:-14,CENTER+1:2"
-#define bigui_righthand_back "WEST-3:-2,CENTER+1:-5"
-#define bigui_righthand_button "WEST-1:-14,CENTER+1:-11"
+#define bigui_lefthand_back "WEST-3:-2,CENTER+2:1"
+#define bigui_lefthand_button "WEST-2:18,CENTER+2:2"
+#define bigui_lefthand_item_pos "WEST-3:24,CENTER+2:1"
+#define bigui_righthand_back "WEST-3:-2,CENTER:27"
+#define bigui_righthand_button "WEST-2:18,CENTER:21"
+#define bigui_righthand_item_pos "WEST-3:24,CENTER:30"
 
+// Actions
+#define bigui_emotes "EAST:24,SOUTH:-14"
+#define bigui_whisper "EAST:24,SOUTH:1"
+#define bigui_speech "EAST:24,SOUTH:16"
+#define bigui_craft "EAST:24,SOUTH+1:-1"
+#define bigui_resist "EAST:24,SOUTH+1:15"
+
+#define bigui_walk "EAST:24,SOUTH+4:4"
+#define bigui_crawl "EAST:24,SOUTH+4:19"
 
 // AI
 #define ui_ai_core "SOUTH:6,WEST"
