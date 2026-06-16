@@ -13,6 +13,7 @@
 		/atom/movable/screen/inventory/hand/big/l,
 		/atom/movable/screen/handbutton/l,
 		/atom/movable/screen/inventory/craft/big,
+		/atom/movable/screen/inventory/crawl,
 		/atom/movable/screen/drop,
 		/atom/movable/screen/resist/big,
 		/atom/movable/screen/speech,
